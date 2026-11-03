@@ -50,7 +50,7 @@ Four short Python scripts build a terminal chat app step by step with the Micros
 | File | What it shows |
 |---|---|
 | `requirements.txt` | The packages: `azure-ai-projects`, `azure-identity`, and `python-dotenv` |
-| `.env.example` | Template for your project endpoint and model deployment name |
+| `.env.example` | Settings template for editors other than VS Code for the Web |
 | `01_first_call.py` | Connect to the project, send one prompt, and print the reply and token usage |
 | `02_instructions.py` | Add helpdesk instructions (the system message) and test an in-scope and out-of-scope question |
 | `03_chat_loop.py` | A chat loop that resends the conversation history, with a token counter and a `REMEMBER` switch to watch the model forget |
@@ -58,9 +58,22 @@ Four short Python scripts build a terminal chat app step by step with the Micros
 
 ### Set up and run
 
+The scripts read two settings:
+
+| Setting | What it is | Required |
+|---|---|---|
+| `AZURE_EXISTING_AIPROJECT_ENDPOINT` | Your Foundry **project endpoint**, from the project **Home** page. Format: `https://<resource-name>.services.ai.azure.com/api/projects/<project-name>` | Yes |
+| `AZURE_MODEL_DEPLOYMENT_NAME` | Your model **deployment name**, from **Build** > **Models** | Only if your deployment isn't named `gpt-5-mini` |
+
+Choose the steps for your editor.
+
+#### Option 1: VS Code for the Web (recommended)
+
+When you open VS Code for the Web from the Foundry playground, Foundry creates a `.env` file at the workspace root with your project endpoint already filled in. The scripts find that file automatically, so there's nothing to copy.
+
 1. In the Foundry portal, open your deployment in the playground, select the **Code** tab, choose **Python**, and select **Open in VS Code for the Web**.
 2. In the VS Code for the Web terminal, run `az account show` to confirm you're signed in to Azure. If you get an error, run `az login`.
-3. Clone this repository and move into the module folder:
+3. Clone this repository into the workspace and move into the module folder:
 
    ```bash
    git clone https://github.com/tsrob50/AI-901-Labs.git
@@ -75,30 +88,71 @@ Four short Python scripts build a terminal chat app step by step with the Micros
    pip install -r requirements.txt
    ```
 
-5. Copy the settings template and open it:
+5. If your deployment isn't named `gpt-5-mini`, open the `.env` file at the workspace root (not in the `AI-901-Labs` folder), add the following line with your deployment name, and save the file:
+
+   ```bash
+   AZURE_MODEL_DEPLOYMENT_NAME="<your-deployment-name>"
+   ```
+
+6. Run the scripts (see [Run the scripts](#run-the-scripts)).
+
+#### Option 2: Another editor (VS Code, PyCharm, or similar)
+
+You need Python 3.10 or later and the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) on your computer.
+
+1. Sign in to Azure:
+
+   ```bash
+   az login
+   ```
+
+2. Clone this repository and move into the module folder:
+
+   ```bash
+   git clone https://github.com/tsrob50/AI-901-Labs.git
+   cd AI-901-Labs/07-build-a-chat-app
+   ```
+
+3. Create and activate a virtual environment, then install the packages:
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+   On Windows, activate the environment with `.venv\Scripts\activate` instead.
+
+4. Copy the settings template:
 
    ```bash
    cp .env.example .env
    ```
 
-6. In `.env`, paste your **project endpoint** (from the project **Home** page in the Foundry portal) and your **deployment name** (from **Build** > **Models**), then save the file.
-7. Run the scripts in order:
+   On Windows, use `copy .env.example .env` instead.
 
-   ```bash
-   python 01_first_call.py
-   python 02_instructions.py
-   python 03_chat_loop.py
-   python 04_chat_streaming.py
-   ```
+5. Open `.env`, replace the placeholder with your **project endpoint**, update the **deployment name** if yours isn't `gpt-5-mini`, and save the file.
 
-   Type `quit` to exit the chat scripts.
+### Run the scripts
+
+Run the scripts in order from the `07-build-a-chat-app` folder:
+
+```bash
+python 01_first_call.py
+python 02_instructions.py
+python 03_chat_loop.py
+python 04_chat_streaming.py
+```
+
+Type `quit` to exit the chat scripts.
 
 ### Common errors
 
 | Error | Likely cause | Fix |
 |---|---|---|
-| Deployment not found | The deployment name in `.env` doesn't match | Copy the exact name from **Build** > **Models** |
-| Connection or endpoint errors | Wrong endpoint in `.env` | Use the **project endpoint** (ends in `/api/projects/<project-name>`), not the Azure OpenAI endpoint |
+| `KeyError: 'AZURE_EXISTING_AIPROJECT_ENDPOINT'` | The scripts can't find a `.env` file with the project endpoint | VS Code for the Web: make sure you cloned the repo inside the workspace. Other editors: create `.env` from `.env.example` in the module folder |
+| Deployment not found | Your deployment isn't named `gpt-5-mini`, or `AZURE_MODEL_DEPLOYMENT_NAME` doesn't match | Add or fix `AZURE_MODEL_DEPLOYMENT_NAME` in `.env` using the exact name from **Build** > **Models** |
+| Connection or endpoint errors | Wrong endpoint in `.env` | Set `AZURE_EXISTING_AIPROJECT_ENDPOINT` to the **project endpoint** (ends in `/api/projects/<project-name>`), not the Azure OpenAI endpoint |
 | `DefaultAzureCredential` failed | No Azure sign-in was found | Run `az login` |
 | 401 or 403 permission denied | Signed in, but missing the data plane role | Assign yourself the **Foundry User** role on the project or resource |
 
