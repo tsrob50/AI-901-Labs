@@ -41,19 +41,29 @@ while True:
     if not user_input:
         continue
 
-    stream = openai_client.responses.create(
-        model=deployment_name,
-        instructions=INSTRUCTIONS,
-        input=user_input,
-        previous_response_id=previous_response_id,  # links to the previous response
-        stream=True,
-    )
+    # Build the request. Instructions are sent every time, because they
+    # aren't carried over from the previous response.
+    request = {
+        "model": deployment_name,
+        "instructions": INSTRUCTIONS,
+        "input": user_input,
+        "stream": True,
+    }
+    # Only link to a previous response once there is one. Foundry rejects
+    # previous_response_id=None on the first message.
+    if previous_response_id:
+        request["previous_response_id"] = previous_response_id
+
+    stream = openai_client.responses.create(**request)
 
     print("Helpdesk: ", end="", flush=True)
+    usage = None
     for event in stream:
         if event.type == "response.output_text.delta":
             print(event.delta, end="", flush=True)  # print each chunk as it arrives
         elif event.type == "response.completed":
             previous_response_id = event.response.id  # remember this response for the next message
             usage = event.response.usage
-    print(f"\n  [input tokens for this message: {usage.input_tokens}]\n")
+    print()
+    if usage:
+        print(f"  [input tokens for this message: {usage.input_tokens}]\n")
