@@ -64,7 +64,7 @@ Four short Python scripts build a terminal chat app step by step with the Micros
 
    ```bash
    git clone https://github.com/tsrob50/AI-901-Labs.git
-   cd /07-build-a-chat-app
+   cd AI-901-Labs/07-build-a-chat-app
    ```
 
 4. Create and activate a virtual environment, then install the packages:
