@@ -13,11 +13,11 @@ from azure.ai.projects import AIProjectClient
 
 load_dotenv()
 project = AIProjectClient(
-    endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
+    endpoint=os.environ["AZURE_EXISTING_AIPROJECT_ENDPOINT"],
     credential=DefaultAzureCredential(),
 )
 openai_client = project.get_openai_client()
-deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]
+deployment_name = os.getenv("AZURE_MODEL_DEPLOYMENT_NAME", "gpt-5-mini")
 
 # The instructions parameter is the system message from the playground.
 # The end user never sees it.

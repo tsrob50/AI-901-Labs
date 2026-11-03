@@ -14,11 +14,11 @@ from azure.ai.projects import AIProjectClient
 
 load_dotenv()
 project = AIProjectClient(
-    endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
+    endpoint=os.environ["AZURE_EXISTING_AIPROJECT_ENDPOINT"],
     credential=DefaultAzureCredential(),
 )
 openai_client = project.get_openai_client()
-deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]
+deployment_name = os.getenv("AZURE_MODEL_DEPLOYMENT_NAME", "gpt-5-mini")
 
 INSTRUCTIONS = """You are the IT helpdesk assistant for Contoso employees.
 You help with two things only: resetting passwords and connecting to Wi-Fi.

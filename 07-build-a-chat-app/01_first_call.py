@@ -12,10 +12,13 @@ from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
 
-# Read FOUNDRY_PROJECT_ENDPOINT and MODEL_DEPLOYMENT_NAME from the .env file
+# Read settings from the .env file. load_dotenv() checks this folder first,
+# then each folder above it, so the .env that VS Code for the Web creates
+# at the workspace root is found automatically.
+# The deployment name falls back to gpt-5-mini if it isn't set.
 load_dotenv()
-project_endpoint = os.environ["FOUNDRY_PROJECT_ENDPOINT"]
-deployment_name = os.environ["MODEL_DEPLOYMENT_NAME"]
+project_endpoint = os.environ["AZURE_EXISTING_AIPROJECT_ENDPOINT"]
+deployment_name = os.getenv("AZURE_MODEL_DEPLOYMENT_NAME", "gpt-5-mini")
 
 # 1. The project client connects to your Foundry project.
 #    DefaultAzureCredential uses the identity you're signed in with (keyless).
