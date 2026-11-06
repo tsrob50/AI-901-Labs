@@ -121,6 +121,8 @@ You need Python 3.10 or later and the [Azure CLI](https://learn.microsoft.com/cl
    pip install -r requirements.txt
    ```
 
+   On macOS and Linux, if you get `command not found: python`, use `python3` instead: `python3 -m venv .venv`. Once the virtual environment is active, `python` works in that terminal, so the rest of the commands stay the same.
+
    On Windows, activate the environment with `.venv\Scripts\activate` instead.
 
 4. Copy the settings template:
