@@ -30,8 +30,9 @@ The series starts with concepts (how AI models work, responsible AI, and the mai
 | 5 | How AI Sees and Hears | Concepts only |
 | 6 | Microsoft Foundry for Beginners | Portal demos, no code |
 | 7 | Build a Chat App with the Foundry SDK | [`07-build-a-chat-app`](./07-build-a-chat-app) |
+| 8 | Build Your First AI Agent in Microsoft Foundry | [`08-build-your-first-agent`](./08-build-your-first-agent) |
 
-New demo files are added as new videos are released, including AI agents, text and speech, computer vision, and information extraction with Azure Content Understanding.
+New demo files are added as new videos are released, including text and speech, computer vision, and information extraction with Azure Content Understanding.
 
 ## Before you start
 
@@ -42,6 +43,7 @@ You need the following to run the demos:
 - The **Foundry User** role (formerly Azure AI User) on the Foundry project or resource. The Owner role alone doesn't let your code call the model.
 - A web browser. The demos run in **VS Code for the Web**, opened from the Foundry playground, so you don't need to install anything on your computer.
 - A GitHub account, only if you want to keep your work after the session ends.
+- For Module 8: an agent built in the Foundry portal. The module steps below walk through it, and the agent needs a model that supports tool calling, like `gpt-5-mini`.
 
 ## Module 7: Build a Chat App with the Foundry SDK
 
@@ -158,9 +160,67 @@ Type `quit` to exit the chat scripts.
 | `DefaultAzureCredential` failed | No Azure sign-in was found | Run `az login` |
 | 401 or 403 permission denied | Signed in, but missing the data plane role | Assign yourself the **Foundry User** role on the project or resource |
 
+## Module 8: Build Your First AI Agent in Microsoft Foundry
+
+You build an IT helpdesk agent in the Foundry portal, give it knowledge with file search, then call it from Python by name. The agent brings its own model, instructions, and tools, so the script has no model name and no instructions in it. The app signs in with Microsoft Entra ID through `DefaultAzureCredential`. Agents don't support API keys.
+
+| File | What it shows |
+|---|---|
+| `contoso-it-helpdesk-guide.txt` | A sample IT helpdesk guide for file search: Wi-Fi networks, password reset, VPN, loaner laptops, and helpdesk hours. All names and values are fictional |
+| `requirements.txt` | The packages: `azure-ai-projects`, `azure-identity`, and `python-dotenv` |
+| `.env.example` | Settings template for editors other than VS Code for the Web |
+| `01_call_agent.py` | Send one question to the agent with an agent reference, then print the reply and the sources it used (file or web citations) |
+
+### Build the agent in the portal
+
+The script needs an agent to call. Create it first:
+
+1. Go to [ai.azure.com](https://ai.azure.com), turn on **New Foundry**, and select your project.
+2. Go to **Build** > **Models** and select your deployment to open the playground.
+3. Add instructions for an IT helpdesk assistant, then select **Save as agent** and name it `it-helpdesk-agent`. You can also create it from **Build** > **Agents** > **Create agent**.
+4. In the agent playground, go to **Tools** > **Add** and upload `contoso-it-helpdesk-guide.txt` for file search. Keep the default index name.
+5. Optional: add **Web search** under **Tools** > **Add**.
+6. Select **Save**. Every save creates a new version of the agent.
+
+Portal labels change often. If a label doesn't match, check the current [Foundry Agent Service documentation](https://learn.microsoft.com/azure/foundry/agents/).
+
+### Set up and run
+
+The script reads two settings:
+
+| Setting | What it is | Required |
+|---|---|---|
+| `AZURE_EXISTING_AIPROJECT_ENDPOINT` | Your Foundry **project endpoint**, from the project **Home** page. Format: `https://<resource-name>.services.ai.azure.com/api/projects/<project-name>` | Yes |
+| `AGENT_NAME` | Your agent's name, from **Build** > **Agents** | Only if your agent isn't named `it-helpdesk-agent` |
+
+Use the same setup steps as Module 7, with the Module 8 folder:
+
+- **VS Code for the Web:** follow [Option 1](#option-1-vs-code-for-the-web-recommended). In step 3, run `cd AI-901-Labs/08-build-your-first-agent`. In step 5, add `AGENT_NAME="<your-agent-name>"` to the workspace `.env` file, only if your agent has a different name.
+- **Another editor:** follow [Option 2](#option-2-another-editor-vs-code-pycharm-or-similar). In step 2, run `cd AI-901-Labs/08-build-your-first-agent`. In step 5, fill in your project endpoint and agent name in `.env`.
+
+Then run the script from the `08-build-your-first-agent` folder:
+
+```bash
+python 01_call_agent.py
+```
+
+The script asks for the guest Wi-Fi network name. If the agent has the helpdesk guide, the answer comes from the guide, and the script lists the guide as the source.
+
+To pin a version of the agent, open `01_call_agent.py` and remove the `#` in front of the `"version"` line in the agent reference. Without a version, Foundry uses the latest version.
+
+### Common errors
+
+| Error | Likely cause | Fix |
+|---|---|---|
+| Agent not found | `AGENT_NAME` doesn't match an agent in the project | Copy the exact name from **Build** > **Agents**. Agent names can't be changed after you create the agent |
+| The answer doesn't use the guide, and no sources are listed | File search isn't attached, or the change wasn't saved | Check the file under **Tools** in the agent playground, select **Save**, and run the script again. Also check that you didn't pin an older version |
+| `KeyError: 'AZURE_EXISTING_AIPROJECT_ENDPOINT'` | The script can't find a `.env` file with the project endpoint | VS Code for the Web: make sure you cloned the repo inside the workspace. Other editors: create `.env` from `.env.example` in the module folder |
+| `DefaultAzureCredential` failed | No Azure sign-in was found | Run `az login` |
+| 401 or 403 permission denied | Signed in, but missing the data plane role | Assign yourself the **Foundry User** role on the project or resource |
+
 ## Costs and cleanup
 
-The demos call a deployed model, and every call is billed in tokens. A Global Standard deployment is billed per token, so a few dozen chat messages cost very little, but check current [Azure pricing](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/) before you start. Keep your `.env` file out of source control.
+The demos call a deployed model, and every call is billed in tokens. A Global Standard deployment is billed per token, so a few dozen chat messages cost very little, but check current [Azure pricing](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/) before you start. In Module 8, file search adds a small storage charge for the index, and web search is billed per call. Keep your `.env` file out of source control.
 
 When you're done with the series, delete the resource group that holds your Foundry resources to stop all charges.
 
