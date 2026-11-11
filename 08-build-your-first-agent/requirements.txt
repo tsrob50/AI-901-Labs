@@ -1,0 +1,6 @@
+# Microsoft Foundry SDK (installs the OpenAI Python library as a dependency)
+azure-ai-projects>=2.3.0
+# Keyless sign-in with Microsoft Entra ID (DefaultAzureCredential)
+azure-identity
+# Reads settings from the .env file
+python-dotenv
