@@ -166,6 +166,7 @@ You build an IT helpdesk agent in the Foundry portal, give it knowledge with fil
 
 | File | What it shows |
 |---|---|
+| `agent-instructions.txt` | The agent instructions (the system message) to paste into the playground |
 | `contoso-it-helpdesk-guide.txt` | A sample IT helpdesk guide for file search: Wi-Fi networks, password reset, VPN, loaner laptops, and helpdesk hours. All names and values are fictional |
 | `requirements.txt` | The packages: `azure-ai-projects`, `azure-identity`, and `python-dotenv` |
 | `.env.example` | Settings template for editors other than VS Code for the Web |
@@ -178,9 +179,9 @@ The scripts need an agent to call. Create it first:
 
 1. Go to [ai.azure.com](https://ai.azure.com), turn on **New Foundry**, and select your project.
 2. Go to **Build** > **Models** and select your deployment to open the playground.
-3. Add instructions for an IT helpdesk assistant, then select **Save as agent** and name it `it-helpdesk-agent`. You can also create it from **Build** > **Agents** > **Create agent**.
+3. Paste the text from `agent-instructions.txt` into **Instructions**, then select **Save as agent** and name it `it-helpdesk-agent`. You can also create it from **Build** > **Agents** > **New agent** > **Build an agent**, then pick the model and add the instructions.
 4. In the agent playground, go to **Tools** > **Add** and upload `contoso-it-helpdesk-guide.txt` for file search. Keep the default index name.
-5. Optional: add **Web search** under **Tools** > **Add**.
+5. Check that **Web search** is listed under **Tools**. It's turned on by default for new agents. If it isn't there, add it under **Tools** > **Add**.
 6. Select **Save**. Every save creates a new version of the agent.
 
 Portal labels change often. If a label doesn't match, check the current [Foundry Agent Service documentation](https://learn.microsoft.com/azure/foundry/agents/).
@@ -217,7 +218,7 @@ To pin a version of the agent, open `01_call_agent.py` and remove the `#` in fro
 | Error | Likely cause | Fix |
 |---|---|---|
 | `404` Agent `<name>` with version not found | `AGENT_NAME` doesn't match an agent in the project | Copy the exact name from **Build** > **Agents**. Agent names can't be changed after you create the agent |
-| The answer doesn't use the guide, and no sources are listed | File search isn't attached, or the change wasn't saved | Check the file under **Tools** in the agent playground, select **Save**, and run the script again. Also check that you didn't pin an older version |
+| The answer doesn't use the guide, and no sources are listed | File search isn't attached, or the change wasn't saved | Check the file under **Tools** in the agent playground, select **Save**, and run the script again. Also check that you didn't pin an older version. If the file is attached but the agent still ignores it, raise the model's reasoning effort to medium in the agent playground and save |
 | `KeyError: 'AZURE_EXISTING_AIPROJECT_ENDPOINT'` | The scripts can't find a `.env` file with the project endpoint | VS Code for the Web: make sure you cloned the repo inside the workspace. Other editors: create `.env` from `.env.example` in the module folder |
 | `DefaultAzureCredential` failed | No Azure sign-in was found | Run `az login` |
 | 401 or 403 permission denied | Signed in, but missing the data plane role | Assign yourself the **Foundry User** role on the project or resource |
