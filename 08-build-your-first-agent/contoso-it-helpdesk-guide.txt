@@ -1,0 +1,89 @@
+CONTOSO IT HELPDESK GUIDE
+For Contoso employees. Version 1.2, updated November 2026.
+This guide is sample content for training. All names, addresses, and numbers are fictional.
+
+
+1. CONTACTING THE IT HELPDESK
+
+Helpdesk hours: Monday to Friday, 7:00 AM to 6:00 PM Central Time.
+After hours, urgent issues only: call the on-call line at extension 4357 (H-E-L-P).
+IT portal (open a ticket): https://itportal.contoso.com
+Helpdesk email: helpdesk@contoso.com
+Typical response time: 4 business hours for standard tickets, 1 hour for urgent tickets.
+
+An urgent ticket is an issue that stops you from working completely, such as a laptop that won't start or an account that is locked during a customer meeting.
+
+
+2. WI-FI NETWORKS
+
+Contoso has two Wi-Fi networks in every office.
+
+Staff network: CONTOSO-CORP
+- For Contoso laptops and phones only.
+- Sign in with your Contoso email address and password. No separate Wi-Fi password is needed.
+- If your laptop won't connect, forget the CONTOSO-CORP network, restart the laptop, and connect again.
+
+Guest network: CONTOSO-GUEST
+- For visitors and personal devices.
+- Connect, then accept the terms on the sign-in page that opens in the browser.
+- Guest access lasts 24 hours, then you accept the terms again.
+- The guest network can't reach internal sites, file shares, or printers.
+
+Never connect a Contoso laptop to CONTOSO-GUEST. It blocks access to internal sites.
+
+
+3. PASSWORDS AND SIGN-IN
+
+Reset your own password: https://passwordreset.contoso.com
+- You need your registered phone for the verification code.
+- Passwords must be at least 14 characters long.
+- Passwords expire every 180 days. You get a reminder email 14 days before.
+
+Account locked: your account locks after 10 failed sign-in attempts. It unlocks on its own after 30 minutes, or you can reset your password to unlock it right away.
+
+Multifactor authentication (MFA): Contoso uses the Microsoft Authenticator app. If you get a new phone, open a ticket before you reset or trade in the old phone.
+
+The IT helpdesk will never ask for your password. Never share it with anyone, including IT staff.
+
+
+4. VPN (WORKING REMOTELY)
+
+VPN app: Contoso Secure Connect (installed on every Contoso laptop).
+VPN address: vpn.contoso.com
+- Open Contoso Secure Connect, enter vpn.contoso.com if it isn't already filled in, and select Connect.
+- Sign in with your Contoso email address and approve the request in Microsoft Authenticator.
+- You only need the VPN for internal sites and file shares. Microsoft 365 apps, including Outlook, Teams, and OneDrive, work without it.
+- If the VPN won't connect, check that your home internet is working, restart the laptop, and try again. If it still fails, open a ticket and include the error message.
+
+
+5. LOANER LAPTOPS
+
+Loaner laptops are available when your Contoso laptop is being repaired or replaced.
+- Request a loaner on the IT portal under Hardware, then Loaner Laptop.
+- Pick up loaners at the IT desk on the 2nd floor of the main office.
+- You can keep a loaner laptop for up to 14 days. Ask for an extension on the original ticket if your repair takes longer.
+- Loaners are wiped when they are returned, so save your files to OneDrive, not the desktop.
+- Return the loaner with its charger to the IT desk.
+
+
+6. NEW HARDWARE AND SOFTWARE
+
+- Standard laptop replacement cycle: every 4 years.
+- Request new software on the IT portal under Software. Approved software installs within 1 business day.
+- Software not on the approved list needs manager approval and a security review, which takes about 5 business days.
+
+
+7. MICROSOFT 365 SERVICE ISSUES
+
+If Outlook, Teams, or OneDrive stop working for many people at once, it may be a Microsoft 365 service issue, not a problem with your laptop.
+- Check the IT portal home page for a service alert banner.
+- Microsoft also posts current service status online.
+- If there is no alert and only you are affected, restart the app, then your laptop, then open a ticket.
+
+
+8. WHAT THE HELPDESK CAN'T HELP WITH
+
+The IT helpdesk does not handle expense reports, payroll, time off, or building access badges.
+- Expense reports and payroll: contact Finance.
+- Time off: contact HR.
+- Building badges: contact Facilities.
