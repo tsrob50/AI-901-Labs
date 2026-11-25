@@ -25,9 +25,11 @@ PREVIEW_FILE = "repair-preview-AI-generated.png"
 
 INSTRUCTIONS = """You review photos of storm damage to homes for an insurance claims team.
 Only report damage you can see in the photo.
-Then write edit_instruction: one or two sentences telling an image editor how to
-show this house after the repair. Only fix the damage you found. Don't change the
-house, the yard, the camera angle, or anything else."""
+Then write edit_instruction: two or three sentences telling an image editor how to
+show this house after the repair and cleanup is finished. Fix the damage you found.
+Remove anything left over from the storm or the repair work, such as ladders, tools,
+debris, and fallen branches. Remove any people, so only the house and yard remain.
+Keep the house design, colors, yard layout, and camera angle the same."""
 
 SCHEMA = {
     "type": "object",
